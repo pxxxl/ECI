@@ -18,6 +18,27 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Branch.hpp" />
+    <ClInclude Include="CircuitAnalyzer.hpp" />
+    <ClInclude Include="Console.hpp" />
+    <ClInclude Include="Element.hpp" />
+    <ClInclude Include="Interpreter.hpp" />
+    <ClInclude Include="Libs.hpp" />
+    <ClInclude Include="Reader.hpp" />
+    <ClInclude Include="Writer.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Math_Engine\Math_Engine\Math_Engine.vcxproj">
+      <Project>{f3279266-b55c-4ed5-a6a8-dc7eb19ece0b}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -116,6 +137,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

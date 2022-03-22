@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Libs.hpp"
-#include "StaticMemory.hpp"
 
 namespace eci {
+	constexpr int readerMaxNumber = 100;
+
 	//Singleton
 	class Reader
 	{

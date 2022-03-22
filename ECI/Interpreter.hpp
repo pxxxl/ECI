@@ -1,6 +1,7 @@
 #pragma once
 
 #include"Libs.hpp"
+#include"Element.hpp"
 
 namespace eci {
 	namespace regex_lib {
@@ -19,10 +20,8 @@ namespace eci {
 	}
 	using namespace regex_lib;
 
-	using sentence = std::pair<unsigned, std::vector<std::string>>;
-	using description = std::pair<void*, std::pair<std::string, std::string>>;
-	using element = std::tuple<unsigned, std::string, description>; 
-	using branch = std::vector<element>;
+	using sentence = std::vector<std::string>;
+
 
 	class interpreter {
 	public:
@@ -39,37 +38,35 @@ namespace eci {
 
 		std::vector<branch> getBranches();
 	private:
-		std::vector<std::string> data;
+		std::vector<std::string> raw_lines;
 		std::vector<sentence> pre_processed;
-		std::vector<element> items;
-		std::vector<std::vector<element>> branches;
+		std::vector<element> elements;
+		std::vector<branch> branches;
 	};
 
 	inline void eci::interpreter::input(std::vector<std::string> lines)
 	{
-		data = lines;
+		raw_lines = lines;
 		return;
 	}
 	inline void interpreter::preProcess()
 	{
 		pre_processed.clear();
-		auto be_d = data.begin();
-		auto en_d = data.end();
-		bool flag = true;
+		bool flag;
 		std::regex rege;
 		std::smatch result;
-		for (; be_d != en_d; be_d++) {
+		for (auto& line : raw_lines) {
 			flag = false;
 			for (unsigned i = 1; i < regex_pro.size(); i++) {
 				rege = regex_pro[i];
-				if (std::regex_match(*be_d, result, rege)) {
+				if (std::regex_match(line, result, rege)) {
 					flag = true;
 					sentence build(i, std::vector<std::string>());
-					//switch here, depending on which sentence string is
+					//switch here, depending on which sentence the string is
 					build.first = i;
-					auto type1 = [&]() {
-						auto be_s = (*be_d).cbegin();
-						auto en_s = (*be_d).cend();
+					auto type1Process = [&]() {
+						auto be_s = (line).cbegin();
+						auto en_s = (line).cend();
 						std::regex pattern("\w+");
 						while (std::regex_search(be_s, en_s, result, pattern)) {
 							build.second.push_back(result[0]);
@@ -77,7 +74,7 @@ namespace eci {
 						}
 						pre_processed.push_back(build);
 					};
-					auto type2 = [&]() {
+					auto type2Process = [&]() {
 						auto be_s = (*be_d).cbegin();
 						auto en_s = (*be_d).cend();
 						std::string nodeB;
@@ -105,8 +102,8 @@ namespace eci {
 					};
 					
 					switch (i) {
-					case DEFINE_KNOT:type1(); break;
-					case DEFINE_ITEM:type2(); break;
+					case DEFINE_KNOT:type1Process(); break;
+					case DEFINE_ITEM:type2Process(); break;
 					}
 				}
 			}
